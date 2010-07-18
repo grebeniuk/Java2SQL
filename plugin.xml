@@ -9,8 +9,8 @@
             id="chViews">
       </category>
       <view
-            name="SQL View"
-            icon="icons/sample.gif"
+            name="Java2SQL"
+            icon="icons/db150_sql.gif"
             category="chViews"
             class="ch.chviews.views.SQLView"
             id="ch.chviews.views.SQLView">

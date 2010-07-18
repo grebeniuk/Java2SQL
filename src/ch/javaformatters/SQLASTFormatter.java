@@ -3,20 +3,10 @@ package ch.javaformatters;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.IJavaElement;
-import org.eclipse.jdt.core.dom.AST;
 import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ASTParser;
-import org.eclipse.jdt.core.dom.ASTVisitor;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.InfixExpression;
-import org.eclipse.jdt.ui.JavaUI;
-import org.eclipse.ui.IEditorInput;
-import org.eclipse.ui.texteditor.ITextEditor;
-
-import ch.utils.eclipse.WorkbenchHelper;
 import ch.utils.eclipse.ast.ASTHelper;
 import ch.utils.eclipse.ast.NodesValueResolver;
 import ch.utils.eclipse.ast.ResolverException;
@@ -29,11 +19,12 @@ public class SQLASTFormatter implements IFormatter
 
     public String getFormatedString(int offset, int lenght) throws IOException
     {
-        log.debug(offset + ", " + lenght);
+        int[] nodeTypes = new int[]{ASTNode.INFIX_EXPRESSION};
+        int[] nodeParentTypes = new int[] {ASTNode.METHOD_INVOCATION, ASTNode.VARIABLE_DECLARATION_FRAGMENT};
         
         ASTParser parser = ASTHelper.getASTParser();
         ASTNode root = parser.createAST(null);
-        ASTNode n = ASTHelper.findNodeByOffset(root, offset);
+        ASTNode n = ASTHelper.findNodeTypeByOffset(root, offset, nodeTypes, nodeParentTypes);
 
         if (n == null || n.getNodeType() != ASTNode.INFIX_EXPRESSION)
         {

@@ -2,7 +2,10 @@ package ch.chviews.views;
 
 import java.io.IOException;
 
+import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.*;
 import org.eclipse.ui.texteditor.ITextEditor;
@@ -59,12 +62,13 @@ public class SQLView extends ViewPart
     public void createPartControl(Composite parent)
     {
         viewer = new Text(parent, SWT.MULTI);
+        viewer.setEditable(false);
+        // Cornsilk 255-248-220
+        viewer.setBackground(new Color(parent.getDisplay(), 255, 248, 220));
         
         makeActions();
         contributeToActionBars();
     }
-
-
 
     private void contributeToActionBars()
     {
@@ -109,10 +113,9 @@ public class SQLView extends ViewPart
     private void refresh()
     {
         IFormatter f = new SQLASTFormatter();        
-        ITextEditor editor = (ITextEditor)WorkbenchHelper.getCurrentEditor();
-        TextSelection sel = (TextSelection) editor.getSelectionProvider().getSelection();
+        int offset = WorkbenchHelper.getCurrentOffset();
         
-        if (sel.isEmpty())
+        if (offset <= 0)
         {
             viewer.setText("");
             return;
@@ -120,8 +123,7 @@ public class SQLView extends ViewPart
         
         try
         {
-            int firstCharNumber = getFirstNotSpace(sel.getText());
-            viewer.setText(f.getFormatedString(sel.getOffset() + firstCharNumber, sel.getLength()));
+            viewer.setText(f.getFormatedString(offset, 0));
         } catch (IOException e)
         {
             chDlgs.showWarning(e.getMessage());
