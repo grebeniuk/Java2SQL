@@ -16,9 +16,10 @@ import org.eclipse.jdt.ui.JavaUI;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 
-import ch.javaformatters.ast.NodesValueResolver;
-import ch.javaformatters.ast.ResolverException;
 import ch.utils.eclipse.WorkbenchHelper;
+import ch.utils.eclipse.ast.ASTHelper;
+import ch.utils.eclipse.ast.NodesValueResolver;
+import ch.utils.eclipse.ast.ResolverException;
 import ch.utils.eclipse.log.ILog;
 import ch.utils.eclipse.log.Logger;
 
@@ -30,9 +31,9 @@ public class SQLASTFormatter implements IFormatter
     {
         log.debug(offset + ", " + lenght);
         
-        ASTParser parser = getASTParser();
+        ASTParser parser = ASTHelper.getASTParser();
         ASTNode root = parser.createAST(null);
-        ASTNode n = findNodeByOffset(root, offset);
+        ASTNode n = ASTHelper.findNodeByOffset(root, offset);
 
         if (n == null || n.getNodeType() != ASTNode.INFIX_EXPRESSION)
         {
@@ -76,57 +77,5 @@ public class SQLASTFormatter implements IFormatter
         }
 
         return buf.toString();
-    }
-
-    /*
-     * @return ASTParser for the current editor.
-     */
-    private ASTParser getASTParser()
-    {
-        ITextEditor editor = (ITextEditor) WorkbenchHelper.getCurrentEditor();
-        IEditorInput input = editor.getEditorInput();
-        IJavaElement element = JavaUI.getEditorInputJavaElement(input);
-        ICompilationUnit source = (ICompilationUnit) element;
-        ASTParser parser = ASTParser.newParser(AST.JLS3);
-        parser.setResolveBindings(true);
-        parser.setKind(ASTParser.K_COMPILATION_UNIT);
-        parser.setSource(source);
-
-        return parser;
-    }
-
-    /**
-     * Finds AST node, that begins at given position
-     * 
-     * @param unit
-     * @param position
-     * @return ASTNode object
-     */
-    public static ASTNode findNodeByOffset(ASTNode root,
-            final int boundaryOffset)
-    {
-
-        class Visitor extends ASTVisitor
-        {
-            ASTNode result = null;
-
-            public ASTNode getResult()
-            {
-                return result;
-            }
-
-            public boolean visit(InfixExpression node)
-            {
-                if (node.getStartPosition() == boundaryOffset)
-                    result = node;
-                return false;
-            };
-
-        }
-
-        Visitor visitor = new Visitor();
-        root.accept(visitor);
-
-        return visitor.getResult();
     }
 }

@@ -7,7 +7,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.part.*;
 import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.jface.action.*;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.TextSelection;
 import org.eclipse.ui.*;
 import org.eclipse.swt.SWT;
@@ -60,7 +59,6 @@ public class SQLView extends ViewPart
     public void createPartControl(Composite parent)
     {
         viewer = new Text(parent, SWT.MULTI);
-        viewer.setText("test");
         
         makeActions();
         contributeToActionBars();
@@ -97,7 +95,7 @@ public class SQLView extends ViewPart
         aRefersh.setText("Referesh");
         aRefersh.setToolTipText("Click to refresh the text.");
         aRefersh.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
-                .getImageDescriptor(ISharedImages.IMG_TOOL_REDO));
+                .getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED));
     }
 
     /**
