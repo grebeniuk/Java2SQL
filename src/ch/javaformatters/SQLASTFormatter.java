@@ -20,12 +20,15 @@ public class SQLASTFormatter implements IFormatter
     public String getFormatedString(int offset, int lenght) throws IOException
     {
         int[] nodeTypes = new int[]{ASTNode.INFIX_EXPRESSION};
-        int[] nodeParentTypes = new int[] {ASTNode.METHOD_INVOCATION, ASTNode.VARIABLE_DECLARATION_FRAGMENT};
+        int[] nodeParentTypes = new int[] {ASTNode.METHOD_INVOCATION, 
+                ASTNode.VARIABLE_DECLARATION_FRAGMENT,
+                ASTNode.ASSIGNMENT,
+                ASTNode.RETURN_STATEMENT};
         
         ASTParser parser = ASTHelper.getASTParser();
         ASTNode root = parser.createAST(null);
         ASTNode n = ASTHelper.findNodeTypeByOffset(root, offset, nodeTypes, nodeParentTypes);
-
+        
         if (n == null || n.getNodeType() != ASTNode.INFIX_EXPRESSION)
         {
             throw new IOException("Please select valid Java string expression");

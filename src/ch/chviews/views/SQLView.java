@@ -113,7 +113,7 @@ public class SQLView extends ViewPart
     private void refresh()
     {
         IFormatter f = new SQLASTFormatter();        
-        int offset = WorkbenchHelper.getCurrentOffset();
+        int offset = WorkbenchHelper.getCurrentOffsetJDT();
         
         if (offset <= 0)
         {
