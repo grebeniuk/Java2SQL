@@ -4,6 +4,7 @@ import org.eclipse.jdt.core.dom.ASTNode;
 import org.eclipse.jdt.core.dom.ClassInstanceCreation;
 import org.eclipse.jdt.core.dom.Expression;
 import org.eclipse.jdt.core.dom.IBinding;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 import org.eclipse.jdt.core.dom.Name;
 
 public class NodesValueResolver
@@ -32,6 +33,10 @@ public class NodesValueResolver
         else if (node instanceof ClassInstanceCreation)
         {
             return new ClassInstanceCreateionResolver(node);
+        }
+        else if (node instanceof MethodInvocation)
+        {
+            return new MethodInvocationResolver(node);
         }
         else if (node instanceof Expression)
         {

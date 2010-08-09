@@ -1,29 +1,30 @@
 package ch.utils.eclipse.ast;
 
 import java.util.List;
+
 import org.eclipse.jdt.core.dom.ASTNode;
-import org.eclipse.jdt.core.dom.ClassInstanceCreation;
+import org.eclipse.jdt.core.dom.MethodInvocation;
 import ch.utils.eclipse.log.ILog;
 import ch.utils.eclipse.log.Logger;
 
 /**
  * Resolve values from Class instance creation nodes.
- * <b>Example:</b> new BigInteger("123"); 
+ * <b>Example:</b> BigInteger.valueOf(30402L); 
  * 
  * @author Andrey Grebeniuk
  */
-public class ClassInstanceCreateionResolver extends GeneralResolver
+public class MethodInvocationResolver extends GeneralResolver
 {
-    ILog log = Logger.getLogger(ClassInstanceCreateionResolver.class);
+    ILog log = Logger.getLogger(MethodInvocationResolver.class);
 
-    public ClassInstanceCreateionResolver(ASTNode node)
+    public MethodInvocationResolver(ASTNode node)
     {
         super(node);
     }
 
     public String resolveAsString()
     {
-        ClassInstanceCreation c = (ClassInstanceCreation)node;
+        MethodInvocation c = (MethodInvocation)node;
         @SuppressWarnings("unchecked")
         List<ASTNode> args = c.arguments();
         
