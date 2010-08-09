@@ -8,7 +8,7 @@ import ch.utils.eclipse.log.ILog;
 import ch.utils.eclipse.log.Logger;
 
 /**
- * Resolve values from Class instance creation nodes.
+ * Resolve values from Method Invocation nodes.
  * <b>Example:</b> BigInteger.valueOf(30402L); 
  * 
  * @author Andrey Grebeniuk
