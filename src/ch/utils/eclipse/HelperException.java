@@ -9,7 +9,9 @@ package ch.utils.eclipse;
  */
 public class HelperException extends Exception
 {
-    /**
+	private static final long serialVersionUID = -1451201755792546148L;
+
+	/**
      * @param message
      */
     public HelperException(String message)

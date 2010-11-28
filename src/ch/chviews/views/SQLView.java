@@ -2,6 +2,9 @@ package ch.chviews.views;
 
 import java.io.IOException;
 
+import org.eclipse.swt.dnd.Clipboard;
+import org.eclipse.swt.dnd.TextTransfer;
+import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
@@ -28,6 +31,9 @@ public class SQLView extends ViewPart
 
     private Text viewer;
     private Action aRefersh;
+    private Action aCopy;
+    
+    private Clipboard clipboard;
    
     /**
      * The constructor.
@@ -49,6 +55,8 @@ public class SQLView extends ViewPart
         
         makeActions();
         contributeToActionBars();
+        
+        clipboard = new Clipboard(parent.getDisplay());
     }
 
     private void contributeToActionBars()
@@ -61,11 +69,13 @@ public class SQLView extends ViewPart
     private void fillLocalPullDown(IMenuManager manager)
     {
         manager.add(aRefersh);
+        manager.add(aCopy);
     }
 
     private void fillLocalToolBar(IToolBarManager manager)
     {
         manager.add(aRefersh);
+        manager.add(aCopy);
     }
 
     private void makeActions()
@@ -77,13 +87,25 @@ public class SQLView extends ViewPart
                 refresh();
             }
         };
-        aRefersh.setText("Referesh");
+        aRefersh.setText("Refresh");
         aRefersh.setToolTipText("Click to refresh the text.");
         aRefersh.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
                 .getImageDescriptor(ISharedImages.IMG_ELCL_SYNCED));
+        
+        aCopy = new Action()
+        {
+            public void run()
+            {
+                copy();
+            }
+        };
+        aCopy.setText("Copy");
+        aCopy.setToolTipText("Click to copy the text to Clipboard.");
+        aCopy.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages()
+                .getImageDescriptor(ISharedImages.IMG_TOOL_COPY));
     }
 
-    /**
+	/**
      * Passing the focus request to the viewer's control.
      */
     public void setFocus()
@@ -93,7 +115,7 @@ public class SQLView extends ViewPart
     
     private void refresh()
     {
-        IFormatter f = new SQLASTFormatter();        
+        IFormatter f = new SQLASTFormatter();
         int offset = WorkbenchHelper.getCurrentOffsetJDT();
         
         if (offset <= 0)
@@ -109,6 +131,13 @@ public class SQLView extends ViewPart
         {
             chDlgs.showWarning(e.getMessage());
         }
+    }
+    
+    private void copy() 
+    {
+        TextTransfer textTransfer = TextTransfer.getInstance();
+        clipboard.setContents(new Object[] { viewer.getText() },
+            new Transfer[] { textTransfer });
     }
     
     /*
