@@ -25,18 +25,11 @@ public class EclipseLog implements ILog
         debugCommon(msg, null);
     }
     
-    /* (non-Javadoc)
-     * @see com.netcracker.ncjsp.log.ILog#debug(java.lang.String, java.lang.Throwable)
-     */
     public void debug(String msg, Throwable thr)
     {
         debugCommon(msg, thr);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.netcracker.ncjsptransformer.log.ILog#error(java.lang.String)
-     */
     public void error(String msg)
     {
         errorCommon(msg, null);
@@ -60,11 +53,6 @@ public class EclipseLog implements ILog
         warnCommon(msg, thr);
     }
 
-    /*
-     * (non-Javadoc)
-     * @see com.netcracker.ncjsptransformer.log.ILog#error(java.lang.String,
-     * java.lang.Throwable)
-     */
     public void error(String msg, Throwable thr)
     {
         errorCommon(msg, thr);
